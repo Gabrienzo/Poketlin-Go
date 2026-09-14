@@ -1,0 +1,46 @@
+# =========================
+# Sistema Operacional
+# =========================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+$RECYCLE.BIN/
+
+# =========================
+# IDEs e Editores
+# =========================
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.swp
+*.swo
+
+# =========================
+# API Kotlin / Ktor (Gradle)
+# =========================
+api/build/
+api/.gradle/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.log
+hs_err_pid*
+replay_pid*
+
+# =========================
+# Worker Go
+# =========================
+services/worker-go/worker
+services/worker-go/worker.exe
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/

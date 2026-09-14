@@ -1,0 +1,22 @@
+syntax = "proto3";
+package tcgworker;
+
+option go_package = "./pb";
+option java_package = "com.poketlin.api.grpc";
+option java_multiple_files = true;
+
+service TcgDataService {
+    rpc GetPokemonCard (CardRequest) returns (CardResponse);
+}
+
+message CardRequest {
+    string card_id = 1;
+}
+
+message CardResponse {
+    string id = 1;
+    string name = 2;
+    string image_url = 3;
+    string set_name = 4;
+    bool success = 5;
+}

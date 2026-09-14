@@ -1,0 +1,27 @@
+[tools]
+go = "1.23.1"
+java = "temurin-21"
+gradle = "8.10.2"
+
+[env]
+GO111MODULE = "on"
+
+[tasks."go:test"]
+description = "Run the Go test suite"
+run = "go test ./..."
+
+[tasks."go:fmt"]
+description = "Format Go source files"
+run = "gofmt -w ."
+
+[tasks."go:run"]
+description = "Run the Go application"
+run = "go run ./..."
+
+[tasks."ktor:run"]
+description = "Run the Ktor application"
+run = "./gradlew run"
+
+[tasks."ktor:test"]
+description = "Run Ktor/Gradle tests"
+run = "./gradlew test"
