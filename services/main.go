@@ -27,9 +27,10 @@ type server struct {
 }
 
 func (s *server) GetPokemonCard(ctx context.Context, req *pb.CardRequest) (*pb.CardResponse, error) {
-	url := "https://api.tcgdex.net/v2/en/cards/" + req.GetCardId()
+	var tcgDexBaseURL = "https://api.tcgdex.net/v2/en/cards/"
 
 	client := http.Client{Timeout: 10 * time.Second}
+	url := tcgDexBaseURL + req.GetCardId()
 	resp, err := client.Get(url)
 	if err != nil || resp.StatusCode != 200 {
 		return &pb.CardResponse{Success: false}, nil

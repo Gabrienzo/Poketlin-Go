@@ -44,3 +44,7 @@ services/worker-go/worker.exe
 *.test
 *.out
 vendor/
+
+api-ktor/.gradle/
+api-ktor/build/
+services/bin/

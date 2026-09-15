@@ -1,7 +1,7 @@
 syntax = "proto3";
 package tcgworker;
 
-option go_package = "./pb";
+option go_package = "worker-go/pb";
 option java_package = "com.poketlin.api.grpc";
 option java_multiple_files = true;
 
