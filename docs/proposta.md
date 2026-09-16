@@ -60,4 +60,4 @@ Decidir seguir o projeto com Kotlin, pois ja fiz projetos anteriormente com java
 
 # 8. Vídeo de Apresentação
 
-- Link:
+- Link: https://drive.google.com/file/d/1JJvsa2qo55TQe9QWfEoIphL1bJQFadTW/view?usp=sharing
