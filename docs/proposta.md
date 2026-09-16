@@ -41,7 +41,7 @@
   Uma entidade de ligação necessária para o banco de dados e lógica do sistema. Em vez de salvar a carta inteira várias vezes dentro do deck, essa entidade salva apenas qual é a carta e a quantidade dela naquele deck específico.
   *Atributos principais:* ID da Carta e Quantidade (ex: 3x Pikachu).
 
-# 5. Decisão de Stack: Kotlin com Spring boot
+# 5. Decisão de Stack: Kotlin com Ktor
 Decidir seguir o projeto com Kotlin, pois ja fiz projetos anteriormente com java e queria ter uma experiência nova para aumentar meu repertório, alem de ser uma linguagem mais moderna e que possui interoperabilidade com o próprio Java, somado a semelhanças que facilitam o aprendizado e melhorias que facilitam o uso e escrita.
 
 # 6. Divisão de Responsabilidades (Serviço Principal vs Go)
