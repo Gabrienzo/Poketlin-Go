@@ -22,6 +22,7 @@ dependencies {
 
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.9.24")
+    testImplementation("com.lemonappdev:konsist:0.17.3")
 }
 
 application {

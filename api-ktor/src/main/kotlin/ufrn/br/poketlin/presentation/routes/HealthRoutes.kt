@@ -1,4 +1,4 @@
-package ufrn.br.poketlin.api.routes
+package ufrn.br.poketlin.presentation.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*

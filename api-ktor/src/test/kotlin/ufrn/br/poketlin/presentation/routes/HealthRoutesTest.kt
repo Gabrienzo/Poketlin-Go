@@ -1,4 +1,4 @@
-package ufrn.br.poketlin.api
+package ufrn.br.poketlin.presentation.routes
 
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -7,6 +7,7 @@ import io.ktor.server.testing.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import ufrn.br.poketlin.module
 
 class HealthRoutesTest {
 
