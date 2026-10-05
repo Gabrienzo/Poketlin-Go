@@ -14,6 +14,10 @@ repositories {
 }
 
 dependencies {
+    implementation("org.flywaydb:flyway-core:10.20.1")
+    implementation("org.flywaydb:flyway-database-postgresql:10.20.1")
+    implementation("org.postgresql:postgresql:42.7.4")
+
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
@@ -26,7 +30,7 @@ dependencies {
 }
 
 application {
-    mainClass.set("ufrn.br.poketlin.api.ApplicationKt")
+    mainClass.set("ufrn.br.poketlin.ApplicationKt")
 }
 
 kotlin {
