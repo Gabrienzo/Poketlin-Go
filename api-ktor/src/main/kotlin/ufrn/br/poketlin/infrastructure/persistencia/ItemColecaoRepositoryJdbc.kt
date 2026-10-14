@@ -20,25 +20,52 @@ class ItemColecaoRepositoryJdbc(private val dataSource: DataSource) : ItemColeca
     override suspend fun salvar(item: ItemColecao): ItemColecao =
             withContext(Dispatchers.IO) {
                 dataSource.connection.use { conexao ->
-                    conexao.prepareStatement(
-                                    """
+                    conexao.autoCommit = false
+                    try {
+                        conexao.prepareStatement(
+                                        """
+                INSERT INTO carta (id, nome, edicao, imagem_url) VALUES (?, ?, ?, ?)
+                ON CONFLICT (id) DO UPDATE
+                SET nome = EXCLUDED.nome, edicao = EXCLUDED.edicao, imagem_url = EXCLUDED.imagem_url
+                """.trimIndent()
+                                )
+                                .use { stmt ->
+                                    stmt.setString(1, item.carta.id.valor)
+                                    stmt.setString(2, item.carta.nome)
+                                    stmt.setString(3, item.carta.edicao)
+                                    stmt.setString(4, item.carta.imagemUrl)
+                                    stmt.executeUpdate()
+                                }
+                        conexao.prepareStatement(
+                                        """
                 INSERT INTO item_colecao (id, carta_id, estado, quantidade, adicionado_em)
                 VALUES (?, ?, ?, ?, ?)
                 ON CONFLICT (id) DO UPDATE
                 SET estado = EXCLUDED.estado, quantidade = EXCLUDED.quantidade
                 """.trimIndent()
-                            )
-                            .use { stmt ->
-                                stmt.setObject(1, item.id.valor)
-                                stmt.setString(2, item.carta.id.valor)
-                                stmt.setString(3, item.estado.name)
-                                stmt.setInt(4, item.quantidade)
-                                stmt.setObject(
-                                        5,
-                                        item.adicionadoEm.atOffset(java.time.ZoneOffset.UTC)
                                 )
-                                stmt.executeUpdate()
-                            }
+                                .use { stmt ->
+                                    stmt.setObject(1, item.id.valor)
+                                    stmt.setString(2, item.carta.id.valor)
+                                    stmt.setString(3, item.estado.name)
+                                    stmt.setInt(4, item.quantidade)
+                                    stmt.setObject(
+                                            5,
+                                            item.adicionadoEm.atOffset(java.time.ZoneOffset.UTC)
+                                    )
+                                    stmt.executeUpdate()
+                                }
+                        conexao.commit()
+                    } catch (e: Exception) {
+                        conexao.rollback()
+                        if (e is java.sql.SQLException && e.sqlState == "23505") {
+                            throw ufrn.br.poketlin.domain.CartaJaNaColecao(
+                                    item.carta.id,
+                                    item.estado
+                            )
+                        }
+                        throw e
+                    }
                 }
                 item
             }
