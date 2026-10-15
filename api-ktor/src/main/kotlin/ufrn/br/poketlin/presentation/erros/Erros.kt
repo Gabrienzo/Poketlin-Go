@@ -16,6 +16,7 @@ import ufrn.br.poketlin.domain.CartaJaNaColecao
 import ufrn.br.poketlin.domain.CartaNaoEncontrada
 import ufrn.br.poketlin.domain.ErroDeDominio
 import ufrn.br.poketlin.domain.ItemColecaoNaoEncontrado
+import ufrn.br.poketlin.domain.CatalogoIndisponivel
 
 class RequisicaoInvalida(mensagem: String) : IllegalArgumentException(mensagem)
 
@@ -42,6 +43,7 @@ fun Application.instalarTratamentoDeErros() {
                 is CartaNaoEncontrada -> HttpStatusCode.NotFound to "Carta não encontrada"
                 is ItemColecaoNaoEncontrado -> HttpStatusCode.NotFound to "Item da coleção não encontrado"
                 is CartaJaNaColecao -> HttpStatusCode.Conflict to "Carta já está na coleção"
+                is CatalogoIndisponivel -> HttpStatusCode.ServiceUnavailable to "Catálogo de cartas indisponível"
             }
             call.responderProblema(status, titulo, e.message)
         }

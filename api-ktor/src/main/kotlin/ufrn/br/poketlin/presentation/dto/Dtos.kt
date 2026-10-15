@@ -39,3 +39,5 @@ fun parseEstado(valor: String): EstadoConservacao =
         ?: throw IllegalArgumentException(
             "Estado inválido: '$valor'. Valores aceitos: ${EstadoConservacao.entries.joinToString()}"
         )
+
+fun Pagina<Carta>.toCartasDto() = PaginaDto(itens.map { it.toDto() }, proximoCursor)

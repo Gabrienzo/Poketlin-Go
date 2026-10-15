@@ -14,3 +14,6 @@ class ItemColecaoNaoEncontrado(val id: ItemColecaoId) :
 
 class CartaJaNaColecao(val cartaId: CartaId, val estado: EstadoConservacao) :
     ErroDeDominio("A carta '$cartaId' já está na coleção no estado $estado")
+
+class CatalogoIndisponivel(motivo: String) :
+    ErroDeDominio("Catálogo de cartas indisponível: $motivo")
