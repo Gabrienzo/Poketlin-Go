@@ -14,6 +14,7 @@ data class ItemColecaoDto(
     val id: String,
     val carta: CartaDto,
     val estado: String,
+    val estadoSigla: String,
     val quantidade: Int,
     val adicionadoEm: String,
 )
@@ -31,10 +32,20 @@ data class AtualizarItemColecaoRequest(val estado: String? = null, val quantidad
 @Serializable
 data class PaginaDto<T>(val itens: List<T>, val proximoCursor: String?)
 
+@Serializable
+data class EstadoDto(val codigo: String, val sigla: String, val descricao: String)
+
+
 fun Carta.toDto() = CartaDto(id.valor, nome, edicao, imagemUrl)
 
-fun ItemColecao.toDto() =
-    ItemColecaoDto(id.valor.toString(), carta.toDto(), estado.name, quantidade, adicionadoEm.toString())
+fun ItemColecao.toDto() = ItemColecaoDto(
+    id = id.valor.toString(),
+    carta = carta.toDto(),
+    estado = estado.name,
+    estadoSigla = estado.sigla,
+    quantidade = quantidade,
+    adicionadoEm = adicionadoEm.toString(),
+)
 
 fun Pagina<ItemColecao>.toDto() = PaginaDto(itens.map { it.toDto() }, proximoCursor)
 
@@ -43,5 +54,7 @@ fun parseEstado(valor: String): EstadoConservacao =
         ?: throw IllegalArgumentException(
             "Estado inválido: '$valor'. Valores aceitos: ${EstadoConservacao.entries.joinToString()}"
         )
+
+fun EstadoConservacao.toDto() = EstadoDto(name, sigla, descricao)
 
 fun Pagina<Carta>.toCartasDto() = PaginaDto(itens.map { it.toDto() }, proximoCursor)
