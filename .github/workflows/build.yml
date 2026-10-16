@@ -10,6 +10,20 @@ jobs:
   build-ktor:
     name: Build API Ktor
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: poketlin
+          POSTGRES_PASSWORD: poketlin
+          POSTGRES_DB: poketlin
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U poketlin -d poketlin"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     defaults:
       run:
         working-directory: ./api-ktor
