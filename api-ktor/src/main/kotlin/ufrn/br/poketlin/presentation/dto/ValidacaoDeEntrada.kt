@@ -7,12 +7,11 @@ import ufrn.br.poketlin.domain.comum.Paginacao
 import ufrn.br.poketlin.presentation.erros.ErroCampo
 import ufrn.br.poketlin.presentation.erros.ErroDeValidacao
 
-fun estadoOuNull(valor: String): EstadoConservacao? =
-    EstadoConservacao.entries.firstOrNull { it.name.equals(valor, ignoreCase = true) }
+fun estadoOuNull(valor: String): EstadoConservacao? = EstadoConservacao.deTexto(valor)
 
 fun erroEstado() = ErroCampo(
     "estado",
-    "valor inválido; aceitos: ${EstadoConservacao.entries.joinToString()}",
+    "valor inválido; aceitos: " + EstadoConservacao.entries.joinToString { "${it.sigla} (${it.name})" },
 )
 
 class NovoItemValidado(val cartaId: CartaId, val estado: EstadoConservacao, val quantidade: Int)

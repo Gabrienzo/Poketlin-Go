@@ -9,6 +9,9 @@ Projeto acadêmico, sprint 1.
 | Nome | Matrícula |
 | ---- | --------- |
 | `<NOME 1>` | `<MATRÍCULA 1>` |
+| `<NOME 2>` | `<MATRÍCULA 2>` |
+
+**Coorte:** `<COORTE>`
 
 ## O que a sprint 1 entrega
 
@@ -16,7 +19,8 @@ Projeto acadêmico, sprint 1.
 | -------- | ---------------------- |
 | Buscar cartas por nome, id ou edição | `GET /cartas` |
 | Navegar pelos resultados com scroll infinito | Paginação por cursor (`limite` e `cursor`, resposta com `proximoCursor`) |
-| Adicionar cartas à minha coleção | `POST /colecao/itens`, já com o estado de conservação |
+| Adicionar cartas à minha coleção | `POST /colecao/itens` |
+| Definir o estado de conservação ao adicionar (ex: M, NM, MP) | Campo `estado` do `POST /colecao/itens`, por nome ou sigla; `GET /colecao/estados` lista as opções |
 | Complemento da coleção | Listar com filtros e paginação, consultar, alterar estado/quantidade e remover |
 
 ## Arquitetura
@@ -124,13 +128,23 @@ A documentação interativa fica em <http://localhost:8080/swagger>, e a especif
 | ------------- | --------- | --------- |
 | `GET /health` | Verifica se a API está de pé | 200 |
 | `GET /cartas` | Busca cartas no catálogo. Parâmetros: `nome`, `id`, `edicao`, `limite` (1 a 100, padrão 20) e `cursor`. Exige ao menos um entre `nome`, `id` e `edicao` | 200, 400, 503 |
-| `POST /colecao/itens` | Adiciona uma carta à coleção | 201 (com `Location`), 400, 404, 409 |
+| `POST /colecao/itens` | Adiciona uma carta à coleção, com estado de conservação (nome ou sigla) e quantidade | 201 (com `Location`), 400, 404, 409 |
 | `GET /colecao/itens` | Lista a coleção. Filtros: `nome`, `edicao`, `estado`; paginação: `limite` e `cursor` | 200, 400 |
 | `GET /colecao/itens/{id}` | Consulta um item | 200, 400, 404 |
 | `PATCH /colecao/itens/{id}` | Altera `estado` e/ou `quantidade` | 200, 400, 404, 409 |
 | `DELETE /colecao/itens/{id}` | Remove um item | 204, 400, 404 |
+| `GET /colecao/estados` | Lista os estados de conservação aceitos (código, sigla e descrição) | 200 |
 
-Estados de conservação aceitos: `MINT`, `NEAR_MINT`, `LIGHTLY_PLAYED`, `MODERATELY_PLAYED`, `HEAVILY_PLAYED`, `DAMAGED`.
+Estados de conservação: use o nome ou a sigla, sem diferenciar maiúsculas de minúsculas. A lista também sai em `GET /colecao/estados`.
+
+| Sigla | Nome | Descrição |
+| ----- | ---- | --------- |
+| `M` | `MINT` | Mint |
+| `NM` | `NEAR_MINT` | Near Mint |
+| `LP` | `LIGHTLY_PLAYED` | Lightly Played |
+| `MP` | `MODERATELY_PLAYED` | Moderately Played |
+| `HP` | `HEAVILY_PLAYED` | Heavily Played |
+| `DMG` | `DAMAGED` | Damaged |
 
 A mesma carta não pode estar na coleção duas vezes no mesmo estado (409).
 
@@ -148,7 +162,25 @@ curl -s "localhost:8080/cartas?nome=pikachu&limite=3&cursor=2"
 ```bash
 curl -i -X POST localhost:8080/colecao/itens \
   -H 'Content-Type: application/json' \
-  -d '{"cartaId":"base1-4","estado":"NEAR_MINT","quantidade":1}'
+  -d '{"cartaId":"base1-4","estado":"NM","quantidade":1}'
+```
+
+O estado aceita o nome (`NEAR_MINT`) ou a sigla (`NM`), em qualquer caixa. A resposta devolve os dois:
+
+```json
+{
+  "id": "5a3e6bff-244b-4409-8d6f-25c637bb63e2",
+  "carta": {
+    "id": "base1-4",
+    "nome": "Charizard",
+    "edicao": "Base Set",
+    "imagemUrl": "https://assets.tcgdex.net/en/base/base1/4/high.png"
+  },
+  "estado": "NEAR_MINT",
+  "estadoSigla": "NM",
+  "quantidade": 1,
+  "adicionadoEm": "2026-10-16T21:51:34.019069Z"
+}
 ```
 
 ### Erros (RFC 9457)
