@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: poketlin
+      POSTGRES_PASSWORD: poketlin
+      POSTGRES_DB: poketlin
+    ports:
+      - "5432:5432"
+    volumes:
+      - poketlin_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U poketlin -d poketlin"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  poketlin_postgres_data:

@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	TcgDataService_GetPokemonCard_FullMethodName = "/tcgworker.TcgDataService/GetPokemonCard"
+	TcgDataService_SearchCards_FullMethodName    = "/tcgworker.TcgDataService/SearchCards"
 )
 
 // TcgDataServiceClient is the client API for TcgDataService service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TcgDataServiceClient interface {
 	GetPokemonCard(ctx context.Context, in *CardRequest, opts ...grpc.CallOption) (*CardResponse, error)
+	SearchCards(ctx context.Context, in *SearchCardsRequest, opts ...grpc.CallOption) (*SearchCardsResponse, error)
 }
 
 type tcgDataServiceClient struct {
@@ -47,11 +49,22 @@ func (c *tcgDataServiceClient) GetPokemonCard(ctx context.Context, in *CardReque
 	return out, nil
 }
 
+func (c *tcgDataServiceClient) SearchCards(ctx context.Context, in *SearchCardsRequest, opts ...grpc.CallOption) (*SearchCardsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SearchCardsResponse)
+	err := c.cc.Invoke(ctx, TcgDataService_SearchCards_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TcgDataServiceServer is the server API for TcgDataService service.
 // All implementations must embed UnimplementedTcgDataServiceServer
 // for forward compatibility.
 type TcgDataServiceServer interface {
 	GetPokemonCard(context.Context, *CardRequest) (*CardResponse, error)
+	SearchCards(context.Context, *SearchCardsRequest) (*SearchCardsResponse, error)
 	mustEmbedUnimplementedTcgDataServiceServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedTcgDataServiceServer struct{}
 
 func (UnimplementedTcgDataServiceServer) GetPokemonCard(context.Context, *CardRequest) (*CardResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetPokemonCard not implemented")
+}
+func (UnimplementedTcgDataServiceServer) SearchCards(context.Context, *SearchCardsRequest) (*SearchCardsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SearchCards not implemented")
 }
 func (UnimplementedTcgDataServiceServer) mustEmbedUnimplementedTcgDataServiceServer() {}
 func (UnimplementedTcgDataServiceServer) testEmbeddedByValue()                        {}
@@ -104,6 +120,24 @@ func _TcgDataService_GetPokemonCard_Handler(srv interface{}, ctx context.Context
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TcgDataService_SearchCards_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchCardsRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TcgDataServiceServer).SearchCards(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: TcgDataService_SearchCards_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TcgDataServiceServer).SearchCards(ctx, req.(*SearchCardsRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TcgDataService_ServiceDesc is the grpc.ServiceDesc for TcgDataService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var TcgDataService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPokemonCard",
 			Handler:    _TcgDataService_GetPokemonCard_Handler,
+		},
+		{
+			MethodName: "SearchCards",
+			Handler:    _TcgDataService_SearchCards_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

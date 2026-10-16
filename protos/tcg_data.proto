@@ -2,11 +2,12 @@ syntax = "proto3";
 package tcgworker;
 
 option go_package = "worker-go/pb";
-option java_package = "com.poketlin.api.grpc";
+option java_package = "ufrn.br.poketlin.infrastructure.grpc";
 option java_multiple_files = true;
 
 service TcgDataService {
     rpc GetPokemonCard (CardRequest) returns (CardResponse);
+    rpc SearchCards (SearchCardsRequest) returns (SearchCardsResponse);
 }
 
 message CardRequest {
@@ -19,4 +20,16 @@ message CardResponse {
     string image_url = 3;
     string set_name = 4;
     bool success = 5;
+}
+
+message SearchCardsRequest {
+    string name = 1;      
+    string set = 2;       
+    int32 page = 3;       
+    int32 page_size = 4;  
+}
+
+message SearchCardsResponse {
+    repeated CardResponse cards = 1;
+    bool has_more = 2;
 }
