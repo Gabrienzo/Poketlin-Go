@@ -1,0 +1,623 @@
+{
+  "openapi" : "3.1.0",
+  "info" : {
+    "title" : "Poketlin API",
+    "description" : "Fichário de cartas Pokémon TCG: busca de cartas e gerenciamento da coleção.",
+    "version" : "1.0.0"
+  },
+  "externalDocs" : {
+    "url" : "/"
+  },
+  "servers" : [ ],
+  "tags" : [ ],
+  "paths" : {
+    "/health" : {
+      "get" : {
+        "tags" : [ ],
+        "parameters" : [ ],
+        "responses" : { },
+        "deprecated" : false
+      }
+    },
+    "/cartas" : {
+      "get" : {
+        "tags" : [ "Cartas" ],
+        "summary" : "Busca cartas no catálogo",
+        "description" : "Informe ao menos um filtro: nome, id ou edicao. Para o scroll infinito, envie o proximoCursor da resposta anterior no parâmetro cursor.",
+        "parameters" : [ {
+          "name" : "nome",
+          "in" : "query",
+          "description" : "Trecho do nome da carta",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        }, {
+          "name" : "id",
+          "in" : "query",
+          "description" : "Id exato da carta, por exemplo base1-4",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        }, {
+          "name" : "edicao",
+          "in" : "query",
+          "description" : "Nome ou id da edição",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        }, {
+          "name" : "limite",
+          "in" : "query",
+          "description" : "Itens por página (1 a 100, padrão 20)",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "title" : "Int"
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "description" : "Cursor devolvido pela página anterior",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Página de cartas",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.PaginaDto_ufrn.br.poketlin.presentation.dto.CartaDto"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Parâmetros inválidos",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          },
+          "503" : {
+            "description" : "Catálogo indisponível",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false
+      }
+    },
+    "/colecao/itens" : {
+      "get" : {
+        "tags" : [ "Coleção" ],
+        "summary" : "Lista os itens da coleção",
+        "description" : "Paginação por cursor: envie o proximoCursor da resposta anterior para obter a página seguinte.",
+        "parameters" : [ {
+          "name" : "nome",
+          "in" : "query",
+          "description" : "Trecho do nome da carta",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        }, {
+          "name" : "edicao",
+          "in" : "query",
+          "description" : "Trecho do nome da edição",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        }, {
+          "name" : "estado",
+          "in" : "query",
+          "description" : "Estado de conservação",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        }, {
+          "name" : "limite",
+          "in" : "query",
+          "description" : "Itens por página (1 a 100, padrão 20)",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32",
+            "title" : "Int"
+          }
+        }, {
+          "name" : "cursor",
+          "in" : "query",
+          "description" : "Cursor devolvido pela página anterior",
+          "required" : false,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Página de itens",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.PaginaDto_ufrn.br.poketlin.presentation.dto.ItemColecaoDto"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Parâmetros inválidos",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false
+      },
+      "post" : {
+        "tags" : [ "Coleção" ],
+        "summary" : "Adiciona uma carta à coleção",
+        "description" : "Registra uma carta do catálogo com o estado de conservação e a quantidade. A mesma carta no mesmo estado não pode ser adicionada duas vezes.",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.NovoItemColecaoRequest"
+              }
+            }
+          },
+          "required" : false
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Item criado",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.ItemColecaoDto"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Dados inválidos",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Carta inexistente no catálogo",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Carta já está na coleção nesse estado",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false
+      }
+    },
+    "/colecao/itens/{id}" : {
+      "get" : {
+        "tags" : [ "Coleção" ],
+        "summary" : "Busca um item da coleção pelo id",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Id do item (UUID)",
+          "required" : true,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Item encontrado",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.ItemColecaoDto"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Id malformado",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Item inexistente",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false
+      },
+      "delete" : {
+        "tags" : [ "Coleção" ],
+        "summary" : "Remove um item da coleção",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Id do item (UUID)",
+          "required" : true,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Item removido",
+            "headers" : { }
+          },
+          "400" : {
+            "description" : "Id malformado",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Item inexistente",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false
+      },
+      "patch" : {
+        "tags" : [ "Coleção" ],
+        "summary" : "Altera o estado e/ou a quantidade de um item",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Id do item (UUID)",
+          "required" : true,
+          "deprecated" : false,
+          "explode" : false,
+          "schema" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.AtualizarItemColecaoRequest"
+              }
+            }
+          },
+          "required" : false
+        },
+        "responses" : {
+          "200" : {
+            "description" : "Item atualizado",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.ItemColecaoDto"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Dados inválidos",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Item inexistente",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          },
+          "409" : {
+            "description" : "Já existe a carta nesse estado",
+            "headers" : { },
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ProblemDetails"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ufrn.br.poketlin.presentation.dto.CartaDto" : {
+        "type" : "object",
+        "properties" : {
+          "edicao" : {
+            "type" : "string",
+            "title" : "String"
+          },
+          "id" : {
+            "type" : "string",
+            "title" : "String"
+          },
+          "imagemUrl" : {
+            "type" : [ "null", "string" ],
+            "title" : "String"
+          },
+          "nome" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        },
+        "required" : [ "edicao", "id", "nome" ],
+        "title" : "CartaDto"
+      },
+      "ufrn.br.poketlin.presentation.dto.PaginaDto_ufrn.br.poketlin.presentation.dto.CartaDto" : {
+        "type" : "object",
+        "properties" : {
+          "itens" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.CartaDto"
+            },
+            "title" : "List<CartaDto>"
+          },
+          "proximoCursor" : {
+            "type" : [ "null", "string" ],
+            "title" : "String"
+          }
+        },
+        "required" : [ "itens" ],
+        "title" : "PaginaDto<CartaDto>"
+      },
+      "ufrn.br.poketlin.presentation.erros.ErroCampo" : {
+        "type" : "object",
+        "properties" : {
+          "campo" : {
+            "type" : "string",
+            "title" : "String"
+          },
+          "mensagem" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        },
+        "required" : [ "campo", "mensagem" ],
+        "title" : "ErroCampo"
+      },
+      "ufrn.br.poketlin.presentation.erros.ProblemDetails" : {
+        "type" : "object",
+        "properties" : {
+          "detail" : {
+            "type" : [ "null", "string" ],
+            "title" : "String"
+          },
+          "errors" : {
+            "type" : [ "null", "array" ],
+            "items" : {
+              "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.erros.ErroCampo"
+            },
+            "title" : "List<ErroCampo>"
+          },
+          "instance" : {
+            "type" : [ "null", "string" ],
+            "title" : "String"
+          },
+          "status" : {
+            "type" : "integer",
+            "format" : "int32",
+            "title" : "Int"
+          },
+          "title" : {
+            "type" : "string",
+            "title" : "String"
+          },
+          "type" : {
+            "type" : "string",
+            "title" : "String"
+          }
+        },
+        "required" : [ "status", "title", "type" ],
+        "title" : "ProblemDetails"
+      },
+      "ufrn.br.poketlin.presentation.dto.NovoItemColecaoRequest" : {
+        "type" : "object",
+        "properties" : {
+          "cartaId" : {
+            "type" : [ "null", "string" ],
+            "title" : "String"
+          },
+          "estado" : {
+            "type" : [ "null", "string" ],
+            "title" : "String"
+          },
+          "quantidade" : {
+            "type" : "integer",
+            "format" : "int32",
+            "title" : "Int"
+          }
+        },
+        "required" : [ "quantidade" ],
+        "title" : "NovoItemColecaoRequest"
+      },
+      "ufrn.br.poketlin.presentation.dto.ItemColecaoDto" : {
+        "type" : "object",
+        "properties" : {
+          "adicionadoEm" : {
+            "type" : "string",
+            "title" : "String"
+          },
+          "carta" : {
+            "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.CartaDto"
+          },
+          "estado" : {
+            "type" : "string",
+            "title" : "String"
+          },
+          "id" : {
+            "type" : "string",
+            "title" : "String"
+          },
+          "quantidade" : {
+            "type" : "integer",
+            "format" : "int32",
+            "title" : "Int"
+          }
+        },
+        "required" : [ "adicionadoEm", "carta", "estado", "id", "quantidade" ],
+        "title" : "ItemColecaoDto"
+      },
+      "ufrn.br.poketlin.presentation.dto.PaginaDto_ufrn.br.poketlin.presentation.dto.ItemColecaoDto" : {
+        "type" : "object",
+        "properties" : {
+          "itens" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ufrn.br.poketlin.presentation.dto.ItemColecaoDto"
+            },
+            "title" : "List<ItemColecaoDto>"
+          },
+          "proximoCursor" : {
+            "type" : [ "null", "string" ],
+            "title" : "String"
+          }
+        },
+        "required" : [ "itens" ],
+        "title" : "PaginaDto<ItemColecaoDto>"
+      },
+      "ufrn.br.poketlin.presentation.dto.AtualizarItemColecaoRequest" : {
+        "type" : "object",
+        "properties" : {
+          "estado" : {
+            "type" : [ "null", "string" ],
+            "title" : "String"
+          },
+          "quantidade" : {
+            "type" : [ "null", "integer" ],
+            "format" : "int32",
+            "title" : "Int"
+          }
+        },
+        "title" : "AtualizarItemColecaoRequest"
+      }
+    },
+    "examples" : { }
+  }
+}

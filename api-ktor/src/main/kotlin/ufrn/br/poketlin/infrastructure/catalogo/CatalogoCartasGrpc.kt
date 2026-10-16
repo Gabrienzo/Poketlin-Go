@@ -12,10 +12,10 @@ import ufrn.br.poketlin.domain.carta.CatalogoCartas
 import ufrn.br.poketlin.domain.carta.FiltroCarta
 import ufrn.br.poketlin.domain.comum.Pagina
 import ufrn.br.poketlin.domain.comum.Paginacao
-import ufrn.br.poketlin.infrastructure.CardRequest
-import ufrn.br.poketlin.infrastructure.CardResponse
-import ufrn.br.poketlin.infrastructure.SearchCardsRequest
-import ufrn.br.poketlin.infrastructure.TcgDataServiceGrpc
+import ufrn.br.poketlin.infrastructure.grpc.CardRequest
+import ufrn.br.poketlin.infrastructure.grpc.CardResponse
+import ufrn.br.poketlin.infrastructure.grpc.SearchCardsRequest
+import ufrn.br.poketlin.infrastructure.grpc.TcgDataServiceGrpc
 import java.util.concurrent.TimeUnit
 
 fun criarCanalWorker(): ManagedChannel =

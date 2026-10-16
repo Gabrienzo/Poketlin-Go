@@ -24,6 +24,8 @@ import ufrn.br.poketlin.presentation.erros.instalarTratamentoDeErros
 import ufrn.br.poketlin.presentation.routes.cartasRoutes
 import ufrn.br.poketlin.presentation.routes.colecaoRoutes
 import ufrn.br.poketlin.presentation.routes.healthRoutes
+import ufrn.br.poketlin.presentation.openapi.documentacaoRoutes
+import ufrn.br.poketlin.presentation.openapi.instalarOpenApi
 
 fun main(args: Array<String>) = EngineMain.main(args)
 
@@ -40,8 +42,10 @@ fun Application.module() {
 fun Application.configurarApi(repositorio: ItemColecaoRepository, catalogo: CatalogoCartas) {
     install(ContentNegotiation) { json() }
     instalarTratamentoDeErros()
+    instalarOpenApi()
     healthRoutes()
     routing {
+        documentacaoRoutes()
         cartasRoutes(BuscarCartas(catalogo))
         colecaoRoutes(
             adicionar = AdicionarItemColecao(catalogo, repositorio),

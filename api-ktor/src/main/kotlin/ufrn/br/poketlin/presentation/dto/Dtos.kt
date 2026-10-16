@@ -19,7 +19,11 @@ data class ItemColecaoDto(
 )
 
 @Serializable
-data class NovoItemColecaoRequest(val cartaId: String, val estado: String, val quantidade: Int = 1)
+data class NovoItemColecaoRequest(
+    val cartaId: String? = null,
+    val estado: String? = null,
+    val quantidade: Int = 1,
+)
 
 @Serializable
 data class AtualizarItemColecaoRequest(val estado: String? = null, val quantidade: Int? = null)

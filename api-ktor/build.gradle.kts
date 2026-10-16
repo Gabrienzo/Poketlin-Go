@@ -27,6 +27,7 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:1.5.6")
+    implementation("io.github.smiley4:ktor-swagger-ui:3.6.0")
 
     implementation("io.grpc:grpc-netty-shaded:$grpcVersion")
     implementation("io.grpc:grpc-protobuf:$grpcVersion")
